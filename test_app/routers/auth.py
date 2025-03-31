@@ -6,6 +6,7 @@ from test_app.schemas.user import UserCreate, UserResponse
 from test_app.models.user import User
 from test_app.models.role import Role, RoleEnum
 from sqlalchemy import select
+from test_app.services.user import role_required
 router = APIRouter()
 
 @router.post("/register", response_model=UserResponse)
@@ -86,3 +87,11 @@ async def login(
     )
     
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/admin")
+def admin_route(user_role: RoleEnum = Depends(role_required(RoleEnum.ADMIN))):
+    return {"message": "Welcome, Admin"}
+
+
+
