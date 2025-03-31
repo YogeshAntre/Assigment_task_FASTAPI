@@ -7,12 +7,47 @@ from test_app.models.role import RoleEnum
 from test_app.services.auth import AuthService
 from test_app.schemas.user import UserCreate, UserResponse
 from test_app.services.user import hash_password
-
+from test_app.models.role import Role
 from test_app.services.user import role_required
 from typing import List
 
 router = APIRouter()
 
+@router.post("/", response_model=UserResponse)
+async def register_user(user: UserCreate, session: AsyncSession = Depends(get_db)):
+    result = await session.execute(select(User).filter(User.email == user.email))
+    existing_user = result.scalars().first()
+
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    role = await session.execute(
+        select(Role).where(Role.name == user.role.value)
+    )
+    role = role.scalar_one_or_none()
+    
+    if not role:
+        role = Role(name=user.role.value)
+        session.add(role)
+        await session.flush()
+    hashed_password = AuthService.get_password_hash(user.password)
+    new_user = User(
+        username=user.username,
+        email=user.email,
+        hashed_password=hashed_password,
+        role_id=role.id
+    )
+    
+    session.add(new_user)
+    await session.commit()
+    await session.refresh(new_user)
+    
+
+    return UserResponse(
+        id=new_user.id,
+        username=new_user.username,
+        email=new_user.email,
+        role=new_user.role.name
+    )
 
 
 @router.get("/", response_model=List[UserResponse], dependencies=[Depends(role_required(RoleEnum.MANAGER))])
