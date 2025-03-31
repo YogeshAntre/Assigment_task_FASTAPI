@@ -18,7 +18,10 @@ router = APIRouter()
 @router.get("/", response_model=List[UserResponse], dependencies=[Depends(role_required(RoleEnum.MANAGER))])
 async def get_users(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User))
+    print('result',result)
     return result.scalars().all()
+
+
 
 
 @router.get("/{user_id}", response_model=UserResponse, dependencies=[Depends(role_required(RoleEnum.MANAGER))])
@@ -29,7 +32,13 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    return user
+    # return user
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        role=user.role.name
+    )
 
 
 @router.put("/{user_id}", response_model=UserResponse, dependencies=[Depends(role_required(RoleEnum.MANAGER))])
