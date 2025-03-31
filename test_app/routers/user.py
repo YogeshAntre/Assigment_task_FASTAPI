@@ -35,6 +35,7 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
 @router.put("/{user_id}", response_model=UserResponse, dependencies=[Depends(role_required(RoleEnum.MANAGER))])
 async def update_user(user_id: int, user_data: UserCreate, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).filter(User.id == user_id))
+    print('result',result)
     user = result.scalars().first()
 
     if not user:
@@ -46,8 +47,17 @@ async def update_user(user_id: int, user_data: UserCreate, db: AsyncSession = De
     user.hashed_password = AuthService.get_password_hash(user_data.password)
     await db.commit()
     await db.refresh(user)
+    await db.refresh(user)
+    
 
-    return user
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        role=user.role.name
+    )
+
+
 
 
 @router.delete("/{user_id}", dependencies=[Depends(role_required(RoleEnum.ADMIN))])
