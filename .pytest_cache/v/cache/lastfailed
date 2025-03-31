@@ -1,0 +1,18 @@
+{
+  "tests/integration/integration_test.py::TestAuthEndpoints::test_register_new_user": true,
+  "tests/integration/integration_test.py::TestAuthEndpoints::test_register_duplicate_username": true,
+  "tests/integration/integration_test.py::TestAuthEndpoints::test_register_weak_password": true,
+  "tests/integration/integration_test.py::TestAuthEndpoints::test_login_valid_credentials": true,
+  "tests/integration/integration_test.py::TestAuthEndpoints::test_login_invalid_password": true,
+  "tests/integration/integration_test.py::TestAuthEndpoints::test_login_nonexistent_user": true,
+  "tests/integration/integration_test.py::TestAuth::test_register_existing_username": true,
+  "tests/integration/integration_test.py::TestAuth::test_login_success": true,
+  "tests/integration/integration_test.py::TestAuth::test_register_user_success": true,
+  "tests/integration/integration_test.py::TestAuth::test_login_invalid_credentials": true,
+  "tests/integration/integration_test.py::TestAuth::test_register_invalid_password": true,
+  "tests/integration/api_test.py::TestAPICase::test_user_registration": true,
+  "tests/integration/test_db.py::test_create_user": true,
+  "tests/integration/test_db.py::TestAuth::test_register_user_success": true,
+  "tests/integration/api_test.py::test_user_email_validation": true,
+  "tests/integration/api_test.py::test_password_hashing": true
+}

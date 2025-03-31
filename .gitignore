@@ -1,0 +1,31 @@
+# # # Created by pytest automatically.
+# # *
+
+# # Copy
+# # Python cache
+__pycache__/
+# # *.py[cod]
+# # *$py.class
+
+# # # Virtual environment
+.venv/
+venv/
+venv/Lib/
+
+# # # IDE specific files
+# .idea/
+# # .vscode/
+# # *.swp
+# # *.swo
+
+# # # Environment variables
+# # .env
+# # .env.local
+
+# # # Alembic migrations (optional)
+#  alembic/versions/
+
+# # # Test artifacts
+# .pytest_cache/
+# .coverage
+# htmlcov/
